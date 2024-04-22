@@ -2,6 +2,11 @@ const productList = document.getElementById("productList");
 const cartItemsElement = document.getElementById("cartItems");
 const cartTotalElement = document.getElementById("cartTotal");
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let menu = document.querySelector(".navbar");
+
+let menuIcon = document.querySelector("#menu-icon");
+
+menuIcon.addEventListener("click", () => menu.classList.toggle("open-menu"));
 
 const products = [
   {
@@ -103,6 +108,9 @@ function addToCart(event) {
         image: product.image,
         quantity: 1,
       };
+
+      event.target.textContent = "Added";
+
       cart.push(cartItem);
       console.log(cart);
     }
@@ -121,6 +129,7 @@ function removeFromCart(event) {
   saveToLocalStorage();
   calculateCartTotal();
   updateCartIcon();
+  renderCartItems();
 }
 
 function changeQuantity(event) {
@@ -177,6 +186,7 @@ function renderCartItems() {
     const quantityInput = quantityInputs[i];
     quantityInput.addEventListener("change", changeQuantity);
   }
+  updateCartIcon();
 }
 
 function calculateCartTotal() {
@@ -191,11 +201,11 @@ if (window.location.pathname.includes("cart.html")) {
   renderProducts();
 }
 
-const cartIcon = document.getElementById("cart-icon");
-
 function updateCartIcon() {
+  const cartIcon = document.getElementById("cart-icon");
+  const i = document.querySelector(".bx-shopping-bag");
   const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
-  cartIcon.setAttribute("data-quantity", totalQuantity);
+  i.setAttribute("data-quantity", totalQuantity);
   console.log("Total quantity:", totalQuantity);
 }
 
